@@ -20,6 +20,8 @@ Thumbs.db
 *.vcproj.*.user
 *.vcxproj.user
 *.csproj.user
+*.vcxproj
+*.vcxproj.files
 *.vspscc
 *_i.c
 *.i
