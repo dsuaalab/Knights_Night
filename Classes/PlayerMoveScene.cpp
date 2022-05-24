@@ -19,6 +19,13 @@ bool PlayerMoveScene::init()
 	// player->onAnimation();
 	this->addChild(player);
 
+	joystick = Joystick::create();		// It's Layer! Not Sprite!
+	joystick->setJoystickPosition(Vec2(200, 200));
+	joystick->setJoystickScale(2.0f);
+	joystick->setAttackBtnScale(2.0f);
+	this->addChild(joystick, 1);
+
+	// Keyboard Listener
 	auto kListener = EventListenerKeyboard::create();
 	kListener->onKeyPressed = CC_CALLBACK_2(PlayerMoveScene::onKeyPressed, this);
 	kListener->onKeyReleased = CC_CALLBACK_2(PlayerMoveScene::onKeyReleased, this);
@@ -34,6 +41,30 @@ void PlayerMoveScene::update(float delta)
 {
 	int speed = 2;
 
+	// Joystick Part
+	player->setPosition(player->getPosition().x + joystick->getDPoint().x * speed, player->getPosition().y + joystick->getDPoint().y * speed);
+
+	if (joystick->joystickTouched)	// Touches on
+	{
+		if (joystick->getDPoint().x > 0)
+			player->setFlippedX(true);
+		else
+			player->setFlippedX(false);
+
+		player->onWalkAnimation();
+	}
+	else if (joystick->attackBtnTouched)
+	{
+		player->onAttackAnimation();
+	}
+	else
+	{
+		player->stopAnimation();
+	}
+
+
+
+	// Keyboard Part
 	switch (player->state)
 	{
 	case Player::State::UP:
@@ -55,7 +86,7 @@ void PlayerMoveScene::update(float delta)
 		player->onWalkAnimation();
 		break;
 	case Player::State::STOP:
-		player->stopAnimation();
+		// player->stopAnimation();
 		break;
 	case Player::State::ATTACK:
 		player->onAttackAnimation();

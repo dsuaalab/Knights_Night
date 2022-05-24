@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "Player.h"
+#include "Joystick.h"
 
 USING_NS_CC;
 
@@ -10,6 +11,7 @@ public:
 	static Scene* createScene();
 
 	Player* player;
+	Joystick* joystick;
 
 	virtual bool init();
 	virtual void update(float delta);
